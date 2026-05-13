@@ -1,0 +1,723 @@
+{
+  "name": "AI-Powered Local Business Lead Generation & Outreach Automation (n8n)",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Data Scraper",
+        "formDescription": "All in one Lead Genaration System",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Enter Location"
+            },
+            {
+              "fieldLabel": "Niche"
+            },
+            {
+              "fieldLabel": "Number of output"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -1216,
+        -256
+      ],
+      "id": "759cdacc-cd93-4dbc-b1b2-f5f8f2554a24",
+      "name": "On form submission",
+      "webhookId": "41f4d1a9-dd4c-46f2-afc4-1afde921d90d"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -736,
+        -256
+      ],
+      "id": "f01e3fe8-b586-4b7b-8e28-5408578a6c27",
+      "name": "Wait",
+      "webhookId": "8d3c9c66-3a28-472b-80e2-49e9771bb802"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "934172e8-5217-4215-bfbb-36055c2f787f",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "SUCCEEDED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -304,
+        -256
+      ],
+      "id": "8d6043c1-efa5-4621-8816-12abe398a2dc",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=Your Token",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"includeWebResults\": false,\n    \"language\": \"en\",\n    \"locationQuery\": \"{{ $json['Enter Location'] }}, USA\",\n    \"maxCrawledPlacesPerSearch\":{{ $json['Number of output'] }},\n    \"maximumLeadsEnrichmentRecords\": 0,\n    \"scrapeContacts\": false,\n    \"scrapeDirectories\": false,\n    \"scrapeImageAuthors\": false,\n    \"scrapePlaceDetailPage\": false,\n    \"scrapeReviewsPersonalData\": true,\n    \"scrapeSocialMediaProfiles\": {\n        \"facebooks\": false,\n        \"instagrams\": false,\n        \"tiktoks\": false,\n        \"twitters\": false,\n        \"youtubes\": false\n    },\n    \"scrapeTableReservationProvider\": false,\n    \"searchStringsArray\": [\n        \"{{ $json.Niche }}\"\n    ],\n    \"skipClosedPlaces\": false,\n    \"verifyLeadsEnrichmentEmails\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -976,
+        -256
+      ],
+      "id": "48863184-c71b-430f-8639-572eeb55d658",
+      "name": "Google Maps Scraper Post"
+    },
+    {
+      "parameters": {
+        "url": "Your Token",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -512,
+        -256
+      ],
+      "id": "1ffd8710-4f5e-4005-8f20-49ecfd413557",
+      "name": "Google Maps Scraper Get Lat run"
+    },
+    {
+      "parameters": {
+        "url": "Your Token",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -112,
+        -272
+      ],
+      "id": "79e564e1-1eb6-4b69-8730-ec7d31b4499f",
+      "name": "Google Maps Scraper Last Dataset"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        432
+      ],
+      "id": "3fa20ef9-56c0-40a5-91c8-a7a49621a255",
+      "name": "Wait1",
+      "webhookId": "8d3c9c66-3a28-472b-80e2-49e9771bb802"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "934172e8-5217-4215-bfbb-36055c2f787f",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "SUCCEEDED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        544,
+        432
+      ],
+      "id": "df09cc8c-1820-483e-abbb-ca2bd245ba84",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=Your Token",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"startUrls\": [\n        \"{{ $json.website }}\"\n    ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -48,
+        416
+      ],
+      "id": "5b4e91a3-787b-4ccf-9879-f2acbeeb2302",
+      "name": "Website Content Crawler Post1"
+    },
+    {
+      "parameters": {
+        "url": "Your Token",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        336,
+        432
+      ],
+      "id": "66071079-be34-4e08-88aa-94d78d802404",
+      "name": "Website Content Crawler Get Last run1"
+    },
+    {
+      "parameters": {
+        "url": "Your Token",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        816,
+        416
+      ],
+      "id": "a196ec1f-eae1-470f-bff5-abf8dd06ec23",
+      "name": "Website Content Crawler Last Dataset1"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        416
+      ],
+      "id": "c2692f82-3a99-40c9-a923-1725c40e05e9",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chat-latest",
+          "mode": "list",
+          "cachedResultName": "CHAT-LATEST"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are a professional cold outreach assistant.\n\nAnalyze the business information and write a short, personalized, professional DM.\n\nRules:\n- Return ONLY the final DM\n- No JSON\n- No explanation\n- No quotation marks\n- Keep it human and natural\n- Keep it under 80 words\n- Mention something relevant from the business\n- Make it sound personalized\n- Avoid spammy sales language\n- End with a soft CTA\n\nBusiness Information:\n\nWebsite Script Information:\n{{ $json.text }}\n\nWebsite:\n{{ $('Loop Over Items').item.json.website }}\n\nAddress:\n{{ $('Loop Over Items').item.json.address }}\n\nState:\n{{ $('Loop Over Items').item.json.state }}\n\nPhone:\n{{ $('Loop Over Items').item.json.phone }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        1360,
+        400
+      ],
+      "id": "5c0d353a-ad5d-4cb9-ad64-177f3b16cd23",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "EsHkL6dwg0fLYpId",
+          "name": "OpenAI account 13"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1fZSgVUxtNbZeZkjsONOHfp3CCYdmMIXByRJ5ARVzhYg",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fZSgVUxtNbZeZkjsONOHfp3CCYdmMIXByRJ5ARVzhYg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "website": "={{ $json.website }}",
+            "Catagori Name": "={{ $json.categoryName }}",
+            "address": "={{ $json.address }}",
+            "state": "={{ $json.street }}",
+            "phone": "={{ $json.phone }}",
+            "phoneUnformatted": "={{ $json.phoneUnformatted }}"
+          },
+          "matchingColumns": [
+            "website"
+          ],
+          "schema": [
+            {
+              "id": "Catagori Name",
+              "displayName": "Catagori Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "address",
+              "displayName": "address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phoneUnformatted",
+              "displayName": "phoneUnformatted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Website Information",
+              "displayName": "Website Information",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        -272
+      ],
+      "id": "805ef2b1-1321-4b96-be8c-bb73e9e7ce21",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvUJ81qBzmXgO7Lj",
+          "name": "Google Sheets account 370"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1fZSgVUxtNbZeZkjsONOHfp3CCYdmMIXByRJ5ARVzhYg",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fZSgVUxtNbZeZkjsONOHfp3CCYdmMIXByRJ5ARVzhYg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "website": "={{ $('Loop Over Items').item.json.website }}",
+            "Catagori Name": "=",
+            "address": "=",
+            "state": "=",
+            "phone": "=",
+            "phoneUnformatted": "=",
+            "Website Information": "={{ $json.output[0].content[0].text }}"
+          },
+          "matchingColumns": [
+            "website"
+          ],
+          "schema": [
+            {
+              "id": "Catagori Name",
+              "displayName": "Catagori Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "address",
+              "displayName": "address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phoneUnformatted",
+              "displayName": "phoneUnformatted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Website Information",
+              "displayName": "Website Information",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1792,
+        464
+      ],
+      "id": "2fd39bd3-ba26-41f9-8842-dffca2fc61d3",
+      "name": "Append or update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvUJ81qBzmXgO7Lj",
+          "name": "Google Sheets account 370"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        400,
+        -272
+      ],
+      "id": "4e7c2e8a-b415-4721-8ba5-54bdb69ebd71",
+      "name": "Loop Over Items"
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "Enter Location": "New york",
+          "Niche": "restaurant",
+          "Number of output": "10",
+          "submittedAt": "2026-05-13T11:04:07.006+02:00",
+          "formMode": "test"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Google Maps Scraper Get Lat run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Google Maps Scraper Last Dataset",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Google Maps Scraper Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Maps Scraper Post": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Maps Scraper Get Lat run": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Maps Scraper Last Dataset": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Website Content Crawler Get Last run1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Website Content Crawler Last Dataset1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Website Content Crawler Post1": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Website Content Crawler Get Last run1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Website Content Crawler Last Dataset1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Website Content Crawler Post1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b1bff17d-1fb8-476b-9d11-fa2df3b8f4b4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "50918ee0be4fd9ad8edd59da0eb4c4a6502c186d6a425a1cf635ba824838446e"
+  },
+  "id": "jBHxsKQ1Ly4zpfdV",
+  "tags": []
+}
